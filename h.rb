@@ -8,9 +8,6 @@ DEFAULT_INTERVAL = 0
 DEFAULT_LOCK_KEY = :lock
 DEFAULT_LOCK_VALUE = "locking!"
 
-PERSIST = -1
-LOCK_KEY_ERR_MSG = "lock key error"
-
 def aquire(ttl, retry_interval=DEFAULT_INTERVAL, key=DEFAULT_LOCK_KEY, value=DEFAULT_LOCK_VALUE, &work)
   while true
     $r.watch key
