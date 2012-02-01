@@ -10,7 +10,6 @@ DEFAULT_LOCK_KEY = :lock
 def aquire(ttl, retry_interval=DEFAULT_INTERVAL, key=DEFAULT_LOCK_KEY, &work)
   while true
     lock_ok = $r.setnx key, lock_time(ttl)
-
     if lock_ok
       work.call
       break
@@ -21,7 +20,7 @@ def aquire(ttl, retry_interval=DEFAULT_INTERVAL, key=DEFAULT_LOCK_KEY, &work)
     unlock_time = $r.get(key).to_f
     if unlock_time < current_time
       transaction_result = $r.multi do |t|      
-        t.set key, lock_time(ttl)
+        t.set key, lock_time(ttl)           # +
       end                                     
       if transaction_result != nil           
         work.call
